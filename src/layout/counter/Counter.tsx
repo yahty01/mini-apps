@@ -1,11 +1,17 @@
 import * as React from 'react';
-import {Button} from "../../components/Button";
-import styled from "styled-components";
 import {useRef, useState} from "react";
-import {DisplayValue} from "./DisplayValue";
+import {DisplayCounterValue} from "./DisplayCounterValue";
+import {theme} from "../../styles/theme";
+import Stack from '@mui/material/Stack';
+import styled from '@emotion/styled';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import PlusOneIcon from '@mui/icons-material/PlusOne';
+import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+
 
 export const Counter = () => {
-	const generateRandomMaxValue = () => Math.round(Math.random() * 9) + 1;
+	const generateRandomMaxValue = () => Math.round(Math.random() * 90) + 1;
 
 	let maxValue = useRef(generateRandomMaxValue());
 
@@ -28,53 +34,68 @@ export const Counter = () => {
 
 	return (
 		<StyledMainDIv>
-			<DisplayValue
-				maxValue={maxValue.current}
-				isMaxValue={isMaxValue}
-				counterValue={counterValue}/>
-			<div>
-				<StyledButton
-					name={'increase'}
-					onClick={increase}
-					disabled={disabledIncrease()}/>
-				<StyledButton
-					name={'reset'}
-					onClick={reset}
-					disabled={disabledReset()}/>
-			</div>
+			<StyledCounter>
+				<DisplayCounterValue
+					maxValue={maxValue.current}
+					isMaxValue={isMaxValue}
+					counterValue={counterValue}/>
+				<StyledStack spacing={1} direction="row" justifyContent={"center"}>
+					<StyledButton
+						variant='outlined'
+						onClick={increase}
+						disabled={disabledIncrease()}
+						size="medium"
+					><PlusOneIcon /></StyledButton>
+					<StyledButton
+						variant='outlined'
+						onClick={reset}
+						disabled={disabledReset()}
+						color={maxValue.current === counterValue ? "error" : "primary"}
+						size="medium"
+					><RotateLeftIcon /></StyledButton>
+				</StyledStack>
+			</StyledCounter>
 		</StyledMainDIv>
 	);
 };
 
 // Стили
-const StyledMainDIv = styled.div`
-  font-size: 30px;
-  width: 600px;
-  height: 500px;
-  background-color: rgb(68, 15, 134);
+export const StyledMainDIv = styled(Box)`
+  font-size: 2rem;
+  height:80vh;
+  background-color: ${theme.colors.accent02};
   display: flex;
-  margin: 50px auto;
   outline: 5px solid black;
   border-radius: 20px;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-around;
+  -webkit-user-select: none; /* Chrome, Safari, Opera */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none; 
+	/* Non-prefixed version */
+	padding: 20px;
+	margin-top: 50px;
+`
+
+const StyledCounter = styled.div`
+  display: flex;
   flex-direction: column;
 `
 
 const StyledButton = styled(Button)`
-  background-color: ${props => (props.disabled ? "grey" : "blue")};
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: ${props => (props.disabled ? "not-allowed" : "pointer")};
-  opacity: ${props => (props.disabled ? 0.6 : 1)};
-  border-radius: 10px;
-  margin: 5px;
-  font-weight: bold;
+  color: ${theme.colors.text};
   letter-spacing: 2px;
-
-  &:hover {
-    background-color: ${props => (props.disabled ? "grey" : "darkblue")};
-  }
+	border-width: 2px;
+	
+	&:hover {
+    border-width: 2px;
+	}
+	
+	&:disabled {
+    border-width: 2px;
+	}
 `;
 
+const StyledStack = styled(Stack)`
+	margin: 20px 0 0 0;
+`
