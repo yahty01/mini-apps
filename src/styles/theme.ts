@@ -5,6 +5,7 @@ export const  theme = {
 		text: '#FFFFFF',
 		secondaryText: '#D9D9D9',
 		accent: '#C778DD',
-		accent02: 'rgba(199, 120, 221, 0.2)'
+		accent02: 'rgba(199, 120, 221, 0.2)',
+		neon: 'rgba(119,225,246,0.66)'
 	}
 }

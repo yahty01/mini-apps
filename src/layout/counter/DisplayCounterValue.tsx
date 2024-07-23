@@ -18,7 +18,7 @@ export const DisplayCounterValue = ({maxValue, isMaxValue, counterValue}: Displa
 		<StyledDisplayCounterValue>
 			<MaxValue>Max value: {maxValue}</MaxValue>
 			<ValueCounter isMaxValue={isMaxValue}>{counterValue}</ValueCounter>
-			<BorderLinearProgress variant="determinate" value={progressPercentage}/>
+			<BorderLinearProgress variant="buffer" value={progressPercentage} />
 		</StyledDisplayCounterValue>
 	);
 };
@@ -39,10 +39,10 @@ const ValueCounter = styled.p<ValueCounterProps>`
   color: ${props => (props.isMaxValue ? "red" : theme.colors.text)};
   text-align: center;
   font-weight: bold;
+	padding: 30px;
 `;
 
 const MaxValue = styled.p`
-  text-align: center;
   border-bottom: 2px solid ${theme.colors.stroke};
   font-weight: bold;
   color: ${theme.colors.text};

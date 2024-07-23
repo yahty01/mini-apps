@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useRef, useState} from "react";
+import {useState} from "react";
 import {DisplayCounterValue} from "./DisplayCounterValue";
 import {theme} from "../../styles/theme";
 import Stack from '@mui/material/Stack';
@@ -8,23 +8,26 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
+import {CounterOptions} from "./counterOptions/CounterOptions";
 
+
+const generateRandomMaxValue = () => Math.round(Math.random() * 20) + 1;
 
 export const Counter = () => {
-	const generateRandomMaxValue = () => Math.round(Math.random() * 90) + 1;
+	const [counterValue, setCounterValue] = useState<number>(0);
+	const [maxValue, setMaxValue] = useState<number>(generateRandomMaxValue);
 
-	let maxValue = useRef(generateRandomMaxValue());
-
-	const initialValue = 0
-	const [counterValue, setCounterValue] = useState<number>(initialValue);
-	const isMaxValue = counterValue >= maxValue.current
+	const OptionsSaved = (max: number, start: number) => {
+		setMaxValue(max)
+		setCounterValue( start)
+	}
+	const isMaxValue = counterValue >= maxValue
 
 	const increase = () => !isMaxValue
 		? setCounterValue(counterValue + 1)
 		: setCounterValue(counterValue)
 
 	const reset = () => {
-		maxValue.current = generateRandomMaxValue()
 		setCounterValue(0);
 	}
 
@@ -34,9 +37,10 @@ export const Counter = () => {
 
 	return (
 		<StyledMainDIv>
+			<CounterOptions OptionsSaved={OptionsSaved}/>
 			<StyledCounter>
 				<DisplayCounterValue
-					maxValue={maxValue.current}
+					maxValue={maxValue}
 					isMaxValue={isMaxValue}
 					counterValue={counterValue}/>
 				<StyledStack spacing={1} direction="row" justifyContent={"center"}>
@@ -44,14 +48,14 @@ export const Counter = () => {
 						variant='outlined'
 						onClick={increase}
 						disabled={disabledIncrease()}
-						size="medium"
+						size="large"
 					><PlusOneIcon /></StyledButton>
 					<StyledButton
 						variant='outlined'
 						onClick={reset}
 						disabled={disabledReset()}
-						color={maxValue.current === counterValue ? "error" : "primary"}
-						size="medium"
+						color={maxValue === counterValue ? "error" : "primary"}
+						size="large"
 					><RotateLeftIcon /></StyledButton>
 				</StyledStack>
 			</StyledCounter>
@@ -61,13 +65,14 @@ export const Counter = () => {
 
 // Стили
 export const StyledMainDIv = styled(Box)`
-  font-size: 2rem;
+  font-size: 3rem;
   height:80vh;
   background-color: ${theme.colors.accent02};
   display: flex;
   outline: 5px solid black;
   border-radius: 20px;
-  justify-content: space-around;
+  justify-content: space-evenly;
+	align-items: center;
   -webkit-user-select: none; /* Chrome, Safari, Opera */
   -moz-user-select: none;    /* Firefox */
   -ms-user-select: none;     /* Internet Explorer/Edge */
@@ -80,11 +85,15 @@ export const StyledMainDIv = styled(Box)`
 const StyledCounter = styled.div`
   display: flex;
   flex-direction: column;
+  outline: ${theme.colors.neon} 3px solid;
+  height: fit-content;
+  padding: 20px;
+	border-radius: 10px;
+	width: 450px;
 `
 
 const StyledButton = styled(Button)`
   color: ${theme.colors.text};
-  letter-spacing: 2px;
 	border-width: 2px;
 	
 	&:hover {
