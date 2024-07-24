@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from "react";
+import {useRef, useState} from "react";
 import {DisplayCounterValue} from "./DisplayCounterValue";
 import {theme} from "../../styles/theme";
 import Stack from '@mui/material/Stack';
@@ -15,11 +15,13 @@ const generateRandomMaxValue = () => Math.round(Math.random() * 20) + 1;
 
 export const Counter = () => {
 	const [counterValue, setCounterValue] = useState<number>(0);
-	const [maxValue, setMaxValue] = useState<number>(generateRandomMaxValue);
+	const [maxValue, setMaxValue] = useState<number>(100);
+
+	const startValue = useRef<number>(0);
 
 	const OptionsSaved = (max: number, start: number) => {
 		setMaxValue(max)
-		setCounterValue( start)
+		startValue.current = ( start)
 	}
 	const isMaxValue = counterValue >= maxValue
 
@@ -28,7 +30,12 @@ export const Counter = () => {
 		: setCounterValue(counterValue)
 
 	const reset = () => {
-		setCounterValue(0);
+		setCounterValue(startValue.current);
+	}
+
+	const setRandomValue = () => {
+		setMaxValue(generateRandomMaxValue())
+		reset()
 	}
 
 
@@ -37,12 +44,13 @@ export const Counter = () => {
 
 	return (
 		<StyledMainDIv>
-			<CounterOptions OptionsSaved={OptionsSaved}/>
+			<CounterOptions OptionsSaved={OptionsSaved} maxValue={maxValue} startValue={startValue}/>
 			<StyledCounter>
 				<DisplayCounterValue
 					maxValue={maxValue}
 					isMaxValue={isMaxValue}
-					counterValue={counterValue}/>
+					counterValue={counterValue}
+				/>
 				<StyledStack spacing={1} direction="row" justifyContent={"center"}>
 					<StyledButton
 						variant='outlined'
@@ -57,6 +65,11 @@ export const Counter = () => {
 						color={maxValue === counterValue ? "error" : "primary"}
 						size="large"
 					><RotateLeftIcon /></StyledButton>
+					<StyledButton
+						variant='outlined'
+						onClick={setRandomValue}
+						size="large"
+					>Random max</StyledButton>
 				</StyledStack>
 			</StyledCounter>
 		</StyledMainDIv>
