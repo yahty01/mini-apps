@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {DisplayCounterValue} from "./DisplayCounterValue";
 import {theme} from "../../styles/theme";
 import Stack from '@mui/material/Stack';
@@ -17,11 +17,42 @@ export const Counter = () => {
 	const [counterValue, setCounterValue] = useState<number>(0);
 	const [maxValue, setMaxValue] = useState<number>(100);
 
-	const startValue = useRef<number>(0);
+	useEffect(()=>{
+		let getCounterValue = localStorage.getItem('counterValue')
+		if (getCounterValue) {
+			setCounterValue(JSON.parse(getCounterValue));
+		}
+	}, [])
+
+	useEffect(() => {
+		localStorage.setItem('counterValue', JSON.stringify(counterValue));
+	}, [counterValue]);
+
+
+
+	useEffect(()=>{
+		let getMaxValue = localStorage.getItem('maxOptionsValue')
+		if (getMaxValue) {
+			setMaxValue(JSON.parse(getMaxValue));
+		}
+	}, [])
+
+	useEffect(()=>{
+		localStorage.setItem('maxOptionsValue', JSON.stringify(maxValue))
+	},[maxValue])
+
+	const resetValue = useRef<number>(0);
+
+	useEffect(()=>{
+		let getResetOptionsValue = localStorage.getItem('resetOptionsValue')
+		if (getResetOptionsValue) {
+			resetValue.current = JSON.parse(getResetOptionsValue)
+		}
+	}, [])
 
 	const OptionsSaved = (max: number, start: number) => {
 		setMaxValue(max)
-		startValue.current = ( start)
+		resetValue.current = ( start)
 	}
 	const isMaxValue = counterValue >= maxValue
 
@@ -30,7 +61,7 @@ export const Counter = () => {
 		: setCounterValue(counterValue)
 
 	const reset = () => {
-		setCounterValue(startValue.current);
+		setCounterValue(resetValue.current);
 	}
 
 	const setRandomValue = () => {
@@ -38,13 +69,12 @@ export const Counter = () => {
 		reset()
 	}
 
-
 	const disabledIncrease = () => isMaxValue
 	const disabledReset = () => counterValue === 0
 
 	return (
 		<StyledMainDIv>
-			<CounterOptions OptionsSaved={OptionsSaved} maxValue={maxValue} startValue={startValue}/>
+			<CounterOptions OptionsSaved={OptionsSaved} maxValue={maxValue} />
 			<StyledCounter>
 				<DisplayCounterValue
 					maxValue={maxValue}

@@ -5,26 +5,43 @@ import {theme} from "../../../styles/theme";
 import Stack from "@mui/material/Stack";
 import {Slider} from "@mui/material";
 import Button from "@mui/material/Button";
-import {MutableRefObject, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 type CounterOptionsProps = {
 	OptionsSaved: (max: number, start: number) => void
 	maxValue: number
-	startValue:  MutableRefObject<number>
 };
 
-export const CounterOptions = ({OptionsSaved, maxValue, startValue}: CounterOptionsProps) => {
+export const CounterOptions = ({OptionsSaved, maxValue}: CounterOptionsProps) => {
 	const [maxOptionsValue, setMaxOptionsValue] = useState<number>(0);
-	const [startOptionsValue, setStartOptionsValue] = useState<number>(0);
+	const [resetOptionsValue, setResetOptionsValue] = useState<number>(0);
 
 	useEffect(()=>{
 		setMaxOptionsValue(maxValue)
 	},[maxValue])
 
-	const onChangeMaxValueHandler = (_: Event, newValue: number | number[]) => setMaxOptionsValue(newValue as number); // _ показывает что параметр намеренно не используется
-	const onChangeStartValueHandler = (_: Event, newValue: number | number[]) => setStartOptionsValue(newValue as number);
+	useEffect(()=>{
+		let getMaxValue = localStorage.getItem('maxOptionsValue')
+		if (getMaxValue) {
+			setMaxOptionsValue(JSON.parse(getMaxValue));
+		}
+	}, [])
+	useEffect(()=>{
+		let getResetOptionsValue = localStorage.getItem('resetOptionsValue')
+		if (getResetOptionsValue) {
+			setResetOptionsValue(JSON.parse(getResetOptionsValue))
+		}
+	}, [])
 
-	const onCLickSaveHandler = () => OptionsSaved(maxOptionsValue, startOptionsValue)
+
+	const onChangeMaxValueHandler = (_: Event, newValue: number | number[]) => setMaxOptionsValue(newValue as number); // _ показывает что параметр намеренно не используется
+	const onChangeStartValueHandler = (_: Event, newValue: number | number[]) => setResetOptionsValue(newValue as number);
+
+	const onCLickSaveHandler = () => {
+		localStorage.setItem('maxOptionsValue', JSON.stringify(maxOptionsValue))
+		localStorage.setItem('resetOptionsValue', JSON.stringify(resetOptionsValue))
+		OptionsSaved(maxOptionsValue, resetOptionsValue)
+	}
 
 	return (
 		<StyledCounterOptions>
@@ -36,7 +53,7 @@ export const CounterOptions = ({OptionsSaved, maxValue, startValue}: CounterOpti
 				<div>
 					<span>Reset value</span>
 					<Stack direction="row" spacing={1}>
-						<StyledSlider defaultValue={0} aria-label="Default" valueLabelDisplay="auto" value={startOptionsValue} onChange={onChangeStartValueHandler}/>
+						<StyledSlider defaultValue={0} aria-label="Default" valueLabelDisplay="auto" value={resetOptionsValue} onChange={onChangeStartValueHandler}/>
 					</Stack>
 				</div>
 			</Stack>
