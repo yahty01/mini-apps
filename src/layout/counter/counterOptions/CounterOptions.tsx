@@ -43,6 +43,19 @@ export const CounterOptions = ({OptionsSaved, maxValue}: CounterOptionsProps) =>
 		OptionsSaved(maxOptionsValue, resetOptionsValue)
 	}
 
+	const checkError = (first: number, second: number) => {
+		let isError: boolean = false
+
+		if (first >= second) {
+			isError = false
+		}
+
+		if (first < second) {
+			isError = true
+		}
+		return isError
+	}
+
 	return (
 		<StyledCounterOptions>
 			<Stack>
@@ -52,13 +65,14 @@ export const CounterOptions = ({OptionsSaved, maxValue}: CounterOptionsProps) =>
 				</div>
 				<div>
 					<span>Reset value</span>
+					{checkError(maxOptionsValue, resetOptionsValue) && <span style={{marginLeft: "5px", color: "red", fontSize: "small"}}>Так разве бывает -_- ?</span>}
 					<Stack direction="row" spacing={1}>
 						<StyledSlider defaultValue={0} aria-label="Default" valueLabelDisplay="auto" value={resetOptionsValue} onChange={onChangeStartValueHandler}/>
 					</Stack>
 				</div>
 			</Stack>
 
-			<Button variant="contained" onClick={onCLickSaveHandler}>Save</Button>
+			<Button variant="contained" onClick={onCLickSaveHandler} disabled={checkError(maxOptionsValue, resetOptionsValue)}>Save</Button>
 		</StyledCounterOptions>
 	);
 };

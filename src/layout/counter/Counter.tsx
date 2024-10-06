@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from 'react';
 import {DisplayCounterValue} from "./DisplayCounterValue";
 import {theme} from "../../styles/theme";
 import Stack from '@mui/material/Stack';
@@ -11,13 +11,15 @@ import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import {CounterOptions} from "./counterOptions/CounterOptions";
 
 
-const generateRandomMaxValue = () => Math.round(Math.random() * 20) + 1;
+const generateRandomMaxValue = (maxValueNow: number) => Math.round(Math.random() * 20) + maxValueNow;
 
 export const Counter = () => {
 	const [counterValue, setCounterValue] = useState<number>(0);
 	const [maxValue, setMaxValue] = useState<number>(100);
+	type optionsIsOpenT = boolean
+	const [optionsIsOpen, setOptionsIsOpen] = useState<optionsIsOpenT>(false);
 
-	useEffect(()=>{
+	useEffect(() => {
 		let getCounterValue = localStorage.getItem('counterValue')
 		if (getCounterValue) {
 			setCounterValue(JSON.parse(getCounterValue));
@@ -29,21 +31,20 @@ export const Counter = () => {
 	}, [counterValue]);
 
 
-
-	useEffect(()=>{
+	useEffect(() => {
 		let getMaxValue = localStorage.getItem('maxOptionsValue')
 		if (getMaxValue) {
 			setMaxValue(JSON.parse(getMaxValue));
 		}
 	}, [])
 
-	useEffect(()=>{
+	useEffect(() => {
 		localStorage.setItem('maxOptionsValue', JSON.stringify(maxValue))
-	},[maxValue])
+	}, [maxValue])
 
 	const resetValue = useRef<number>(0);
 
-	useEffect(()=>{
+	useEffect(() => {
 		let getResetOptionsValue = localStorage.getItem('resetOptionsValue')
 		if (getResetOptionsValue) {
 			resetValue.current = JSON.parse(getResetOptionsValue)
@@ -52,7 +53,8 @@ export const Counter = () => {
 
 	const OptionsSaved = (max: number, start: number) => {
 		setMaxValue(max)
-		resetValue.current = ( start)
+		switchDisplayOptions()
+		resetValue.current = (start)
 	}
 	const isMaxValue = counterValue >= maxValue
 
@@ -64,65 +66,80 @@ export const Counter = () => {
 		setCounterValue(resetValue.current);
 	}
 
-	const setRandomValue = () => {
-		setMaxValue(generateRandomMaxValue())
+	const setRandomValue = (maxValueNow: number) => {
+		setMaxValue(generateRandomMaxValue(maxValueNow))
 		reset()
+	}
+
+	const switchDisplayOptions = () => {
+		setOptionsIsOpen(!optionsIsOpen)
 	}
 
 	const disabledIncrease = () => isMaxValue
 	const disabledReset = () => counterValue === 0
 
-	return (
-		<StyledMainDIv>
-			<CounterOptions OptionsSaved={OptionsSaved} maxValue={maxValue} />
-			<StyledCounter>
-				<DisplayCounterValue
-					maxValue={maxValue}
-					isMaxValue={isMaxValue}
-					counterValue={counterValue}
-				/>
-				<StyledStack spacing={1} direction="row" justifyContent={"center"}>
-					<StyledButton
-						variant='outlined'
-						onClick={increase}
-						disabled={disabledIncrease()}
-						size="large"
-					><PlusOneIcon /></StyledButton>
-					<StyledButton
-						variant='outlined'
-						onClick={reset}
-						disabled={disabledReset()}
-						color={maxValue === counterValue ? "error" : "primary"}
-						size="large"
-					><RotateLeftIcon /></StyledButton>
-					<StyledButton
-						variant='outlined'
-						onClick={setRandomValue}
-						size="large"
-					>Random max</StyledButton>
-				</StyledStack>
-			</StyledCounter>
-		</StyledMainDIv>
-	);
+
+	return <StyledMainDIv>
+		{
+			optionsIsOpen
+				? <CounterOptions OptionsSaved={OptionsSaved} maxValue={maxValue}/>
+				: <>
+					<StyledCounter>
+						<DisplayCounterValue
+							maxValue={maxValue}
+							isMaxValue={isMaxValue}
+							counterValue={counterValue}
+						/>
+						<StyledStack spacing={1} direction="row" justifyContent={"center"}>
+							<StyledButton
+								variant='outlined'
+								onClick={increase}
+								disabled={disabledIncrease()}
+								size="large"
+							><PlusOneIcon/></StyledButton>
+							<StyledButton
+								variant='outlined'
+								onClick={reset}
+								disabled={disabledReset()}
+								color={maxValue === counterValue ? "error" : "primary"}
+								size="large"
+							><RotateLeftIcon/></StyledButton>
+							<StyledButton
+								variant='outlined'
+								onClick={()=>setRandomValue(counterValue)}
+								size="large"
+							>Random max</StyledButton>
+							<StyledButton
+								variant='outlined'
+								onClick={switchDisplayOptions}
+								size="large"
+							>Settings</StyledButton>
+						</StyledStack>
+					</StyledCounter>
+				</>
+		}
+	</StyledMainDIv>
+
+
 };
 
 // Стили
 export const StyledMainDIv = styled(Box)`
   font-size: 3rem;
-  height:80vh;
+  height: 80vh;
   background-color: ${theme.colors.accent02};
   display: flex;
-  outline: 5px solid black;
+  outline: 3px solid rgba(52, 16, 16, 0.5);
   border-radius: 20px;
   justify-content: space-evenly;
-	align-items: center;
+  align-items: center;
   -webkit-user-select: none; /* Chrome, Safari, Opera */
-  -moz-user-select: none;    /* Firefox */
-  -ms-user-select: none;     /* Internet Explorer/Edge */
-  user-select: none; 
-	/* Non-prefixed version */
-	padding: 20px;
-	margin-top: 50px;
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version */
+  padding: 20px;
+  margin-top: 50px;
 `
 
 const StyledCounter = styled.div`
@@ -131,23 +148,23 @@ const StyledCounter = styled.div`
   outline: ${theme.colors.neon} 3px solid;
   height: fit-content;
   padding: 20px;
-	border-radius: 10px;
-	width: 450px;
+  border-radius: 10px;
+  width: fit-content;
 `
 
 const StyledButton = styled(Button)`
   color: ${theme.colors.text};
-	border-width: 2px;
-	
-	&:hover {
+  border-width: 2px;
+
+  &:hover {
     border-width: 2px;
-	}
-	
-	&:disabled {
+  }
+
+  &:disabled {
     border-width: 2px;
-	}
+  }
 `;
 
 const StyledStack = styled(Stack)`
-	margin: 20px 0 0 0;
+  margin: 20px 0 0 0;
 `
