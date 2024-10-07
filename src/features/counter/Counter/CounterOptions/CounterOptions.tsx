@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import styled from "styled-components";
-import {theme} from "../../../styles/theme";
+import {theme} from "../../../../styles/theme";
 import Stack from "@mui/material/Stack";
 import {Slider} from "@mui/material";
 import Button from "@mui/material/Button";

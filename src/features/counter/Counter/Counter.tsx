@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
-import {DisplayCounterValue} from "./DisplayCounterValue";
-import {theme} from "../../styles/theme";
+import {DisplayCounterValue} from "./DisplayCounterValue/DisplayCounterValue";
+import {theme} from "../../../styles/theme";
 import Stack from '@mui/material/Stack';
 import styled from '@emotion/styled';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
-import {CounterOptions} from "./counterOptions/CounterOptions";
+import {CounterOptions} from "./CounterOptions/CounterOptions";
 
 
 const generateRandomMaxValue = (maxValueNow: number) => Math.round(Math.random() * 20) + maxValueNow;
@@ -16,8 +16,9 @@ const generateRandomMaxValue = (maxValueNow: number) => Math.round(Math.random()
 export const Counter = () => {
 	const [counterValue, setCounterValue] = useState<number>(0);
 	const [maxValue, setMaxValue] = useState<number>(100);
-	type optionsIsOpenT = boolean
 	const [optionsIsOpen, setOptionsIsOpen] = useState<optionsIsOpenT>(false);
+
+	type optionsIsOpenT = boolean
 
 	useEffect(() => {
 		let getCounterValue = localStorage.getItem('counterValue')
@@ -106,7 +107,7 @@ export const Counter = () => {
 							><RotateLeftIcon/></StyledButton>
 							<StyledButton
 								variant='outlined'
-								onClick={()=>setRandomValue(counterValue)}
+								onClick={() => setRandomValue(counterValue)}
 								size="large"
 							>Random max</StyledButton>
 							<StyledButton
