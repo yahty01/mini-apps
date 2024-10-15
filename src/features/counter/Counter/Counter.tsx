@@ -16,41 +16,39 @@ const generateRandomMaxValue = (maxValueNow: number) => Math.round(Math.random()
 export const Counter = () => {
 	const [counterValue, setCounterValue] = useState<number>(0);
 	const [maxValue, setMaxValue] = useState<number>(100);
-	const [optionsIsOpen, setOptionsIsOpen] = useState<optionsIsOpenT>(false);
+	const [optionsIsOpen, setOptionsIsOpen] = useState<boolean>(false);
 
-	type optionsIsOpenT = boolean
-
-	useEffect(() => {
-		let getCounterValue = localStorage.getItem('counterValue')
-		if (getCounterValue) {
-			setCounterValue(JSON.parse(getCounterValue));
-		}
-	}, [])
-
-	useEffect(() => {
-		localStorage.setItem('counterValue', JSON.stringify(counterValue));
-	}, [counterValue]);
-
-
-	useEffect(() => {
-		let getMaxValue = localStorage.getItem('maxOptionsValue')
-		if (getMaxValue) {
-			setMaxValue(JSON.parse(getMaxValue));
-		}
-	}, [])
-
-	useEffect(() => {
-		localStorage.setItem('maxOptionsValue', JSON.stringify(maxValue))
-	}, [maxValue])
+	// useEffect(() => {
+	// 	let getCounterValue = localStorage.getItem('counterValue')
+	// 	if (getCounterValue) {
+	// 		setCounterValue(JSON.parse(getCounterValue));
+	// 	}
+	// }, [])
+	//
+	// useEffect(() => {
+	// 	localStorage.setItem('counterValue', JSON.stringify(counterValue));
+	// }, [counterValue]);
+	//
+	//
+	// useEffect(() => {
+	// 	let getMaxValue = localStorage.getItem('maxOptionsValue')
+	// 	if (getMaxValue) {
+	// 		setMaxValue(JSON.parse(getMaxValue));
+	// 	}
+	// }, [])
+	//
+	// useEffect(() => {
+	// 	localStorage.setItem('maxOptionsValue', JSON.stringify(maxValue))
+	// }, [maxValue])
 
 	const resetValue = useRef<number>(0);
 
-	useEffect(() => {
-		let getResetOptionsValue = localStorage.getItem('resetOptionsValue')
-		if (getResetOptionsValue) {
-			resetValue.current = JSON.parse(getResetOptionsValue)
-		}
-	}, [])
+	// useEffect(() => {
+	// 	let getResetOptionsValue = localStorage.getItem('resetOptionsValue')
+	// 	if (getResetOptionsValue) {
+	// 		resetValue.current = JSON.parse(getResetOptionsValue)
+	// 	}
+	// }, [])
 
 	const OptionsSaved = (max: number, start: number) => {
 		setMaxValue(max)
@@ -67,7 +65,7 @@ export const Counter = () => {
 		setCounterValue(resetValue.current);
 	}
 
-	const setRandomValue = (maxValueNow: number) => {
+	const setRandomMaxValue = (maxValueNow: number) => {
 		setMaxValue(generateRandomMaxValue(maxValueNow))
 		reset()
 	}
@@ -107,7 +105,7 @@ export const Counter = () => {
 							><RotateLeftIcon/></StyledButton>
 							<StyledButton
 								variant='outlined'
-								onClick={() => setRandomValue(counterValue)}
+								onClick={() => setRandomMaxValue(counterValue)}
 								size="large"
 							>Random max</StyledButton>
 							<StyledButton

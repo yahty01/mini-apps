@@ -20,26 +20,11 @@ export const CounterOptions = ({OptionsSaved, maxValue}: CounterOptionsProps) =>
 		setMaxOptionsValue(maxValue)
 	},[maxValue])
 
-	useEffect(()=>{
-		let getMaxValue = localStorage.getItem('maxOptionsValue')
-		if (getMaxValue) {
-			setMaxOptionsValue(JSON.parse(getMaxValue));
-		}
-	}, [])
-	useEffect(()=>{
-		let getResetOptionsValue = localStorage.getItem('resetOptionsValue')
-		if (getResetOptionsValue) {
-			setResetOptionsValue(JSON.parse(getResetOptionsValue))
-		}
-	}, [])
-
 
 	const onChangeMaxValueHandler = (_: Event, newValue: number | number[]) => setMaxOptionsValue(newValue as number); // _ показывает что параметр намеренно не используется
 	const onChangeStartValueHandler = (_: Event, newValue: number | number[]) => setResetOptionsValue(newValue as number);
 
 	const onCLickSaveHandler = () => {
-		localStorage.setItem('maxOptionsValue', JSON.stringify(maxOptionsValue))
-		localStorage.setItem('resetOptionsValue', JSON.stringify(resetOptionsValue))
 		OptionsSaved(maxOptionsValue, resetOptionsValue)
 	}
 
