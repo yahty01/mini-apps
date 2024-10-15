@@ -1,4 +1,3 @@
-
 export type IncrementCounterA = {
 	type: 'INCREMENT-COUNTER'
 }
@@ -12,10 +11,14 @@ export type ChangeCounterMaxValueA = {
 	newValue: number
 }
 
+export type ChangeResetValueA = {
+	type: 'CHANGE-RESET-VALUE'
+	newValue: number
+}
+
 export type initialStateType = {
 	counterValue: number
 	maxValue: number
-	optionsIsOpen: boolean
 	resetValue: number
 }
 
@@ -23,22 +26,30 @@ export type initialStateType = {
 export type ActionsType =
 	| IncrementCounterA
 	| ResetCounterA
-    | ChangeCounterMaxValueA
+	| ChangeResetValueA
+	| ChangeCounterMaxValueA
 
 
 const initialState: initialStateType = {
 	counterValue: 0,
 	maxValue: 10,
-	optionsIsOpen: false,
 	resetValue: 0
 }
-
-export const counterReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
+//Если мы используем данные с сервера, каким образом мы их инициализируем при первом рендере?
+export const counterReducer = (
+	state: initialStateType = initialState,
+	action: ActionsType,
+): initialStateType => {
 
 	switch (action.type) {
 		case 'INCREMENT-COUNTER': {
 			const isMaxValue = state.counterValue >= state.maxValue
-			return {...state, counterValue: !isMaxValue ? state.counterValue + 1 : state.counterValue}
+			return {
+				...state,
+				counterValue: !isMaxValue
+					? state.counterValue + 1
+					: state.counterValue
+			}
 		}
 
 		case 'RESET-COUNTER': {
@@ -47,6 +58,11 @@ export const counterReducer = (state: initialStateType = initialState, action: A
 
 		case 'CHANGE-COUNTER-MAX': {
 			return {...state, maxValue: action.newValue}
+		}
+
+		case "CHANGE-RESET-VALUE": {
+			return {...state, resetValue: action.newValue}
+
 		}
 
 		default:
@@ -71,6 +87,13 @@ export const resectAC = (): ResetCounterA => {
 export const changeMaxValueAC = (newValue: number): ChangeCounterMaxValueA => {
 	return {
 		type: 'CHANGE-COUNTER-MAX',
+		newValue
+	} as const
+}
+
+export const changeResetValueAC = (newValue: number): ChangeResetValueA => {
+	return {
+		type: 'CHANGE-RESET-VALUE',
 		newValue
 	} as const
 }

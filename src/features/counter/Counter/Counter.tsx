@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useRef, useState} from 'react';
+import {useRef, useState} from 'react';
 import {DisplayCounterValue} from "./DisplayCounterValue/DisplayCounterValue";
 import {theme} from "../../../styles/theme";
 import Stack from '@mui/material/Stack';
@@ -9,15 +9,27 @@ import Box from '@mui/material/Box';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import {CounterOptions} from "./CounterOptions/CounterOptions";
+import {useAppDispatch} from "../../../common/hooks/useAppDispatch";
+import {useAppSelector} from "../../../common/hooks/useAppSelector";
+import {changeMaxValueAC, changeResetValueAC, incrementAC, resectAC} from "../model/counter-reducer";
+import {selectCounterValue, selectMaxValue, selectResetValue} from "../model/counterSelectors";
 
 
 const generateRandomMaxValue = (maxValueNow: number) => Math.round(Math.random() * 20) + maxValueNow;
 
 export const Counter = () => {
-	const [counterValue, setCounterValue] = useState<number>(0);
-	const [maxValue, setMaxValue] = useState<number>(100);
+
+
+	const dispatch = useAppDispatch()
+	const counterValue = useAppSelector(selectCounterValue)
+	const maxValue = useAppSelector(selectMaxValue)
+	const resetValue = useAppSelector(selectResetValue)
+
 	const [optionsIsOpen, setOptionsIsOpen] = useState<boolean>(false);
 
+	const switchDisplayOptions = () => {
+		setOptionsIsOpen(!optionsIsOpen)
+	}
 	// useEffect(() => {
 	// 	let getCounterValue = localStorage.getItem('counterValue')
 	// 	if (getCounterValue) {
@@ -40,9 +52,6 @@ export const Counter = () => {
 	// useEffect(() => {
 	// 	localStorage.setItem('maxOptionsValue', JSON.stringify(maxValue))
 	// }, [maxValue])
-
-	const resetValue = useRef<number>(0);
-
 	// useEffect(() => {
 	// 	let getResetOptionsValue = localStorage.getItem('resetOptionsValue')
 	// 	if (getResetOptionsValue) {
@@ -51,27 +60,24 @@ export const Counter = () => {
 	// }, [])
 
 	const OptionsSaved = (max: number, start: number) => {
-		setMaxValue(max)
+		dispatch(changeMaxValueAC(max))
 		switchDisplayOptions()
-		resetValue.current = (start)
+		dispatch(changeResetValueAC(start))
 	}
+
 	const isMaxValue = counterValue >= maxValue
 
-	const increase = () => !isMaxValue
-		? setCounterValue(counterValue + 1)
-		: setCounterValue(counterValue)
+	const increase = () => {
+		dispatch(incrementAC())
+	}
 
 	const reset = () => {
-		setCounterValue(resetValue.current);
+		dispatch(resectAC());
 	}
 
 	const setRandomMaxValue = (maxValueNow: number) => {
-		setMaxValue(generateRandomMaxValue(maxValueNow))
-		reset()
-	}
-
-	const switchDisplayOptions = () => {
-		setOptionsIsOpen(!optionsIsOpen)
+		dispatch(changeMaxValueAC(generateRandomMaxValue(maxValueNow)))
+		dispatch(resectAC());
 	}
 
 	const disabledIncrease = () => isMaxValue
@@ -132,11 +138,10 @@ export const StyledMainDIv = styled(Box)`
   border-radius: 20px;
   justify-content: space-evenly;
   align-items: center;
-  -webkit-user-select: none; /* Chrome, Safari, Opera */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* Internet Explorer/Edge */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; 
   user-select: none;
-  /* Non-prefixed version */
   padding: 20px;
   margin-top: 50px;
 `

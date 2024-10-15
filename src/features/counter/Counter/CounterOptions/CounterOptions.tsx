@@ -1,11 +1,13 @@
 // @flow
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import styled from "styled-components";
 import {theme} from "../../../../styles/theme";
 import Stack from "@mui/material/Stack";
 import {Slider} from "@mui/material";
 import Button from "@mui/material/Button";
-import {useEffect, useState} from "react";
+import {resectAC} from "../../model/counter-reducer";
+import {useAppDispatch} from "../../../../common/hooks/useAppDispatch";
 
 type CounterOptionsProps = {
 	OptionsSaved: (max: number, start: number) => void
@@ -13,6 +15,8 @@ type CounterOptionsProps = {
 };
 
 export const CounterOptions = ({OptionsSaved, maxValue}: CounterOptionsProps) => {
+	const dispatch = useAppDispatch();
+
 	const [maxOptionsValue, setMaxOptionsValue] = useState<number>(0);
 	const [resetOptionsValue, setResetOptionsValue] = useState<number>(0);
 
@@ -26,6 +30,7 @@ export const CounterOptions = ({OptionsSaved, maxValue}: CounterOptionsProps) =>
 
 	const onCLickSaveHandler = () => {
 		OptionsSaved(maxOptionsValue, resetOptionsValue)
+		dispatch(resectAC());
 	}
 
 	const checkError = (first: number, second: number) => {
