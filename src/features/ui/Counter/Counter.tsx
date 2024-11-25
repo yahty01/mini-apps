@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {useRef, useState} from 'react';
-import {DisplayCounterValue} from "./DisplayCounterValue/DisplayCounterValue";
 import {theme} from "../../../styles/theme";
 import Stack from '@mui/material/Stack';
 import styled from '@emotion/styled';
@@ -8,11 +7,12 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import PlusOneIcon from '@mui/icons-material/PlusOne';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
-import {CounterOptions} from "./CounterOptions/CounterOptions";
 import {useAppDispatch} from "../../../common/hooks/useAppDispatch";
 import {useAppSelector} from "../../../common/hooks/useAppSelector";
-import {changeMaxValueAC, changeResetValueAC, incrementAC, resectAC} from "../model/counter-reducer";
-import {selectCounterValue, selectMaxValue, selectResetValue} from "../model/counterSelectors";
+import {changeMaxValueAC, changeResetValueAC, incrementAC, resectAC} from "../../model/counter-reducer";
+import {selectCounterValue, selectMaxValue, selectResetValue} from "../../model/counterSelectors";
+import {CounterOptions} from "./CounterOptions/CounterOptions";
+import {DisplayCounterValue} from "./DisplayCounterValue/DisplayCounterValue";
 
 
 const generateRandomMaxValue = (maxValueNow: number) => Math.round(Math.random() * 20) + maxValueNow;
@@ -23,7 +23,6 @@ export const Counter = () => {
 	const dispatch = useAppDispatch()
 	const counterValue = useAppSelector(selectCounterValue)
 	const maxValue = useAppSelector(selectMaxValue)
-	const resetValue = useAppSelector(selectResetValue)
 
 	const [optionsIsOpen, setOptionsIsOpen] = useState<boolean>(false);
 
@@ -130,34 +129,31 @@ export const Counter = () => {
 
 // Стили
 export const StyledMainDIv = styled(Box)`
-  font-size: 3rem;
-  height: 80vh;
-  background-color: ${theme.colors.accent02};
-  display: flex;
-  outline: 3px solid rgba(52, 16, 16, 0.5);
-  border-radius: 20px;
-  justify-content: space-evenly;
-  align-items: center;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none; 
-  user-select: none;
-  padding: 20px;
-  margin-top: 50px;
+  margin-top: 10%;
+  display: flex; 
+	justify-content: center; 
+	align-items: center;
 `
 
 const StyledCounter = styled.div`
+  background-color: ${theme.colors.accent};
+  font-size: 3rem;
   display: flex;
   flex-direction: column;
-  outline: ${theme.colors.neon} 3px solid;
+  outline: ${theme.colors.primaryDark} 10px solid;
   height: fit-content;
   padding: 20px;
   border-radius: 10px;
   width: fit-content;
+	
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 `
 
 const StyledButton = styled(Button)`
-  color: ${theme.colors.text};
+  color: ${theme.colors.accentLight};
   border-width: 2px;
 
   &:hover {

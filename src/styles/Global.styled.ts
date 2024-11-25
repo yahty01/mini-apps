@@ -16,8 +16,8 @@ export const GlobalStyle = createGlobalStyle`
       margin: 0;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-	    color: ${theme.colors.text};
-	    background-color: ${theme.colors.primaryBg};
+	    color: ${theme.colors.accent};
+	    background-color: ${theme.colors.accentLight};
 	    line-height: 1.2;
     }
 
@@ -36,14 +36,14 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     header {
-      background-color: ${theme.colors.primaryBg};
+      background-color: ${theme.colors.primary};
     }
 
     section {
-      background-color: ${theme.colors.primaryBg};
+      background-color: ${theme.colors.primary};
     }
 
     footer {
-      background-color: ${theme.colors.primaryBg};
+      background-color: ${theme.colors.primary};
     }
 `

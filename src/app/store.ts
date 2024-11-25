@@ -1,8 +1,10 @@
 import {combineReducers, legacy_createStore} from "redux";
-import {counterReducer} from "../features/counter/model/counter-reducer";
+import {counterReducer} from "../features/model/counter-reducer";
+import {appReducer} from "./model/app-reducer";
 
 export const rootReducer = combineReducers({
     counter: counterReducer,
+    app: appReducer,
 })
 
 export const store = legacy_createStore(rootReducer);

@@ -6,7 +6,7 @@ import {theme} from "../../../../styles/theme";
 import Stack from "@mui/material/Stack";
 import {Slider} from "@mui/material";
 import Button from "@mui/material/Button";
-import {resectAC} from "../../model/counter-reducer";
+import {resectAC} from "../../../model/counter-reducer";
 import {useAppDispatch} from "../../../../common/hooks/useAppDispatch";
 
 type CounterOptionsProps = {
@@ -72,7 +72,7 @@ const StyledCounterOptions = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  outline: ${theme.colors.neon} 3px solid;
+  outline: ${theme.colors.accent} 3px solid;
   height: fit-content;
   padding: 20px;
   border-radius: 10px;

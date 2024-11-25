@@ -36,16 +36,16 @@ const StyledDisplayCounterValue = styled.div`
   margin-bottom: 20px;
 `
 const ValueCounter = styled.p<ValueCounterProps>`
-  color: ${props => (props.isMaxValue ? "red" : theme.colors.text)};
+  color: ${props => (props.isMaxValue ? "red" : theme.colors.accentLight)};
   text-align: center;
   font-weight: bold;
 	padding: 30px;
 `;
 
 const MaxValue = styled.p`
-  border-bottom: 2px solid ${theme.colors.stroke};
+  border-bottom: 2px solid ${theme.colors.accent};
   font-weight: bold;
-  color: ${theme.colors.text};
+  color: ${theme.colors.accentLight};
 	min-width: 300px;
 `;
 

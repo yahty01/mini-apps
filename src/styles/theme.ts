@@ -1,11 +1,9 @@
 export const  theme = {
 	colors: {
-		primaryBg: '#282C33',
-		stroke: '#ABB2BF',
-		text: '#FFFFFF',
-		secondaryText: '#D9D9D9',
-		accent: '#C778DD',
-		accent02: 'rgba(199, 120, 221, 0.2)',
-		neon: 'rgba(119,225,246,0.66)'
+		primary: '#5cda93',
+		primaryLight: '#8ce3ae',
+		primaryDark: '#389482',
+		accentLight: '#ecf3df',
+		accent: '#05396b',
 	}
 }

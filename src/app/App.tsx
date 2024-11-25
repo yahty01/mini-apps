@@ -1,5 +1,5 @@
 import React from 'react';
-import { Counter } from "../features/counter/Counter/Counter";
+import { Counter } from "../features/ui/Counter/Counter";
 import Container from '@mui/material/Container';
 
 function App() {
