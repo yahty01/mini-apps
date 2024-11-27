@@ -13,7 +13,7 @@ import {changeMaxValueAC, changeResetValueAC, incrementAC, resectAC} from "../..
 import {selectCounterValue, selectMaxValue, selectResetValue} from "../../model/counterSelectors";
 import {CounterOptions} from "./CounterOptions/CounterOptions";
 import {DisplayCounterValue} from "./DisplayCounterValue/DisplayCounterValue";
-
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
 
 const generateRandomMaxValue = (maxValueNow: number) => Math.round(Math.random() * 20) + maxValueNow;
 
@@ -29,34 +29,6 @@ export const Counter = () => {
 	const switchDisplayOptions = () => {
 		setOptionsIsOpen(!optionsIsOpen)
 	}
-	// useEffect(() => {
-	// 	let getCounterValue = localStorage.getItem('counterValue')
-	// 	if (getCounterValue) {
-	// 		setCounterValue(JSON.parse(getCounterValue));
-	// 	}
-	// }, [])
-	//
-	// useEffect(() => {
-	// 	localStorage.setItem('counterValue', JSON.stringify(counterValue));
-	// }, [counterValue]);
-	//
-	//
-	// useEffect(() => {
-	// 	let getMaxValue = localStorage.getItem('maxOptionsValue')
-	// 	if (getMaxValue) {
-	// 		setMaxValue(JSON.parse(getMaxValue));
-	// 	}
-	// }, [])
-	//
-	// useEffect(() => {
-	// 	localStorage.setItem('maxOptionsValue', JSON.stringify(maxValue))
-	// }, [maxValue])
-	// useEffect(() => {
-	// 	let getResetOptionsValue = localStorage.getItem('resetOptionsValue')
-	// 	if (getResetOptionsValue) {
-	// 		resetValue.current = JSON.parse(getResetOptionsValue)
-	// 	}
-	// }, [])
 
 	const OptionsSaved = (max: number, start: number) => {
 		dispatch(changeMaxValueAC(max))
@@ -89,6 +61,13 @@ export const Counter = () => {
 				? <CounterOptions OptionsSaved={OptionsSaved} maxValue={maxValue}/>
 				: <>
 					<StyledCounter>
+						<StyledHiddenButton
+							variant='contained'
+							onClick={switchDisplayOptions}
+							size="large"
+						>
+							<StyledSettingsIcon className="icon"/>
+						</StyledHiddenButton>
 						<DisplayCounterValue
 							maxValue={maxValue}
 							isMaxValue={isMaxValue}
@@ -113,11 +92,6 @@ export const Counter = () => {
 								onClick={() => setRandomMaxValue(counterValue)}
 								size="large"
 							>Random max</StyledButton>
-							<StyledButton
-								variant='outlined'
-								onClick={switchDisplayOptions}
-								size="large"
-							>Settings</StyledButton>
 						</StyledStack>
 					</StyledCounter>
 				</>
@@ -130,12 +104,13 @@ export const Counter = () => {
 // Стили
 export const StyledMainDIv = styled(Box)`
   margin-top: 10%;
-  display: flex; 
-	justify-content: center; 
-	align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const StyledCounter = styled.div`
+  position: relative; /* Это важно */
   background-color: ${theme.colors.accent};
   font-size: 3rem;
   display: flex;
@@ -145,7 +120,6 @@ const StyledCounter = styled.div`
   padding: 20px;
   border-radius: 10px;
   width: fit-content;
-	
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -168,3 +142,24 @@ const StyledButton = styled(Button)`
 const StyledStack = styled(Stack)`
   margin: 20px 0 0 0;
 `
+
+
+const StyledHiddenButton = styled(Button)`
+  position: absolute;
+  top: -10.5%;
+  right: 0;
+  background-color: ${theme.colors.accent};
+  color: ${theme.colors.accentLight};
+  border-radius: 10%;
+  padding: 10px;
+	box-shadow: none;
+  &:hover {
+    .icon {transform: rotate(150deg);}
+  }
+`;
+
+const StyledSettingsIcon = styled(SettingsTwoToneIcon)`
+  display: block;
+  transition: transform 0.4s ease-in-out; /* Плавный возврат */
+  transform: rotate(0deg); /* Начальное положение */
+`;
