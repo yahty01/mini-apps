@@ -1,5 +1,4 @@
-import * as React from 'react';
-import {useRef, useState} from 'react';
+import {useState} from 'react';
 import {theme} from "../../../styles/theme";
 import Stack from '@mui/material/Stack';
 import styled from '@emotion/styled';
@@ -10,7 +9,7 @@ import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import {useAppDispatch} from "../../../common/hooks/useAppDispatch";
 import {useAppSelector} from "../../../common/hooks/useAppSelector";
 import {setMaxValueAC, setResetValueAC, incrementAC, resectAC} from "../../model/counter-reducer";
-import {selectCounterValue, selectMaxValue} from "../../model/counterSelectors";
+import {selectCounterValue, selectMaxValue, selectResetValue} from "../../model/counterSelectors";
 import {CounterOptions} from "./CounterOptions/CounterOptions";
 import {DisplayCounterValue} from "./DisplayCounterValue/DisplayCounterValue";
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
@@ -23,6 +22,7 @@ export const Counter = () => {
 	const dispatch = useAppDispatch()
 	const counterValue = useAppSelector(selectCounterValue)
 	const maxValue = useAppSelector(selectMaxValue)
+	const resetValue = useAppSelector(selectResetValue)
 
 	const [optionsIsOpen, setOptionsIsOpen] = useState<boolean>(false);
 
@@ -58,7 +58,7 @@ export const Counter = () => {
 	return <StyledMainDIv>
 		{
 			optionsIsOpen
-				? <CounterOptions OptionsSaved={OptionsSaved} maxValue={maxValue}/>
+				? <CounterOptions OptionsSaved={OptionsSaved} maxValue={maxValue} resetValue={resetValue}/>
 				: <>
 					<StyledCounter>
 						<StyledHiddenButton
@@ -107,6 +107,7 @@ export const StyledMainDIv = styled(Box)`
   display: flex;
   justify-content: center;
   align-items: center;
+	outline: 1px solid red;
 `
 
 const StyledCounter = styled.div`
@@ -117,9 +118,9 @@ const StyledCounter = styled.div`
   flex-direction: column;
   outline: ${theme.colors.primaryDark} 10px solid;
   height: fit-content;
-  padding: 20px;
+  padding: 60px;
   border-radius: 10px;
-  width: fit-content;
+  width:500px;
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -146,8 +147,8 @@ const StyledStack = styled(Stack)`
 
 const StyledHiddenButton = styled(Button)`
   position: absolute;
-  top: -10.5%;
-  right: 0;
+  top: 4%;
+  right: 1%;
   background-color: ${theme.colors.accent};
   color: ${theme.colors.accentLight};
   border-radius: 10%;
@@ -155,6 +156,8 @@ const StyledHiddenButton = styled(Button)`
 	box-shadow: none;
   &:hover {
     .icon {transform: rotate(150deg);}
+    background-color: ${theme.colors.accent};
+    box-shadow: none;
   }
 `;
 

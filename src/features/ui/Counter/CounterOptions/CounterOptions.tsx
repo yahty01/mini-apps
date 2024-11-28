@@ -12,9 +12,10 @@ import {useAppDispatch} from "../../../../common/hooks/useAppDispatch";
 type CounterOptionsProps = {
 	OptionsSaved: (max: number, start: number) => void
 	maxValue: number
+	resetValue: number
 };
 
-export const CounterOptions = ({OptionsSaved, maxValue}: CounterOptionsProps) => {
+export const CounterOptions = ({OptionsSaved, maxValue, resetValue}: CounterOptionsProps) => {
 	const dispatch = useAppDispatch();
 
 	const [maxOptionsValue, setMaxOptionsValue] = useState<number>(0);
@@ -23,6 +24,9 @@ export const CounterOptions = ({OptionsSaved, maxValue}: CounterOptionsProps) =>
 	useEffect(()=>{
 		setMaxOptionsValue(maxValue)
 	},[maxValue])
+	useEffect(()=>{
+		setResetOptionsValue(resetValue)
+	},[resetValue])
 
 
 	const onChangeMaxValueHandler = (_: Event, newValue: number | number[]) => setMaxOptionsValue(newValue as number); // _ показывает что параметр намеренно не используется
@@ -68,17 +72,19 @@ export const CounterOptions = ({OptionsSaved, maxValue}: CounterOptionsProps) =>
 };
 
 const StyledCounterOptions = styled.div`
+	
   font-size: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  outline: ${theme.colors.accent} 3px solid;
+  background-color: ${theme.colors.accent};
+  outline: ${theme.colors.primaryDark} 10px solid;
+  color: ${theme.colors.accentLight};
   height: fit-content;
-  padding: 20px;
+  padding: 60px;
   border-radius: 10px;
-  width: 450px;
-	
-	button {
+  width:500px;
+  button {
 		margin-top: 30px;
 	}
 `

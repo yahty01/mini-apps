@@ -12,7 +12,9 @@ const initialState: CounterState = {
 
 export const counterReducer = (state: CounterState = initialState, action: ActionsType,): CounterState => {
 	switch (action.type) {
-		case 'INCREMENT-COUNTER': return {...state, value: state.value >= state.maxValue ? state.value + 1 : state.value}
+		case 'INCREMENT-COUNTER': {
+			return {...state, value: state.value < state.maxValue ? ++state.value : state.value}
+		}
 		case 'SET-COUNTER-MAX': return {...state, maxValue: action.newValue}
 		case "SET-RESET-VALUE": return {...state, resetValue: action.newValue}
 		case 'RESET-COUNTER': return {...state, value: state.resetValue}
