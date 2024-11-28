@@ -29,8 +29,11 @@ export const CounterOptions = ({OptionsSaved, maxValue, resetValue}: CounterOpti
 	},[resetValue])
 
 
-	const onChangeMaxValueHandler = (_: Event, newValue: number | number[]) => setMaxOptionsValue(newValue as number); // _ показывает что параметр намеренно не используется
-	const onChangeStartValueHandler = (_: Event, newValue: number | number[]) => setResetOptionsValue(newValue as number);
+	const onChangeMaxValueHandler = (_: Event, newValue: number | number[]) =>
+		setMaxOptionsValue(newValue as number);
+// _ показывает что параметр намеренно не используется
+	const onChangeStartValueHandler = (_: Event, newValue: number | number[]) =>
+		setResetOptionsValue(newValue as number);
 
 	const onCLickSaveHandler = () => {
 		OptionsSaved(maxOptionsValue, resetOptionsValue)
@@ -72,7 +75,6 @@ export const CounterOptions = ({OptionsSaved, maxValue, resetValue}: CounterOpti
 };
 
 const StyledCounterOptions = styled.div`
-	
   font-size: 2rem;
   display: flex;
   flex-direction: column;
@@ -84,9 +86,11 @@ const StyledCounterOptions = styled.div`
   padding: 60px;
   border-radius: 10px;
   width:500px;
+	
   button {
 		margin-top: 30px;
 	}
+	
 `
 
 const StyledSlider = styled(Slider)`
