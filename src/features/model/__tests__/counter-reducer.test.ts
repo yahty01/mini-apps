@@ -1,14 +1,14 @@
 import {
     counterReducer,
-    initialStateType,
+    CounterState,
     incrementAC,
     resectAC,
-    changeMaxValueAC
+    setMaxValueAC
 } from "../counter-reducer";
 // Как вызвать акшен несколько раз в тесте ?
 
-const initState: initialStateType = {
-    counterValue: 0,
+const initState: CounterState = {
+    value: 0,
     maxValue: 2,
     optionsIsOpen: false,
     resetValue: 0
@@ -22,19 +22,19 @@ test('correct increase and reset to zero', () => {
     const endState3 = counterReducer(endState2, incrementAC())
     const endState4 = counterReducer(endState3, resectAC())
 
-    expect(endState1.counterValue).toEqual(1)
-    expect(endState2.counterValue).toEqual(2)
-    expect(endState3.counterValue).toEqual(2)
-    expect(endState4.counterValue).toEqual(0)
+    expect(endState1.value).toEqual(1)
+    expect(endState2.value).toEqual(2)
+    expect(endState3.value).toEqual(2)
+    expect(endState4.value).toEqual(0)
 })
 
 test('correct change max value', () => {
     const startState = {...initState}
-    const endState = counterReducer(startState, changeMaxValueAC(1))
+    const endState = counterReducer(startState, setMaxValueAC(1))
     const endState1 = counterReducer(endState, incrementAC())
     const endState2 = counterReducer(endState1, incrementAC())
 
-    expect(endState2.counterValue).toEqual(1)
+    expect(endState2.value).toEqual(1)
 
 })
 

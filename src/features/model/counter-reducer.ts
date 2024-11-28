@@ -1,102 +1,41 @@
-export type IncrementCounterA = {
-	type: 'INCREMENT-COUNTER'
+// actions
+export const resectAC = () => ({type: 'RESET-COUNTER'}) as const
+export const incrementAC = () => ({type: 'INCREMENT-COUNTER'}) as const
+export const setMaxValueAC = (newValue: number) => ({type: 'SET-COUNTER-MAX', newValue}) as const
+export const setResetValueAC = (newValue: number) => ({type: 'SET-RESET-VALUE', newValue}) as const
+
+const initialState: CounterState = {
+	value: 0,
+	maxValue: 10,
+	resetValue: 0
 }
 
-export type ResetCounterA = {
-	type: 'RESET-COUNTER'
+export const counterReducer = (state: CounterState = initialState, action: ActionsType,): CounterState => {
+	switch (action.type) {
+		case 'INCREMENT-COUNTER': return {...state, value: state.value >= state.maxValue ? state.value + 1 : state.value}
+		case 'SET-COUNTER-MAX': return {...state, maxValue: action.newValue}
+		case "SET-RESET-VALUE": return {...state, resetValue: action.newValue}
+		case 'RESET-COUNTER': return {...state, value: state.resetValue}
+
+		default: return state
+	}
 }
 
-export type ChangeCounterMaxValueA = {
-	type: 'CHANGE-COUNTER-MAX'
-	newValue: number
-}
-
-export type ChangeResetValueA = {
-	type: 'CHANGE-RESET-VALUE'
-	newValue: number
-}
-
-export type initialStateType = {
-	counterValue: number
+//types
+export type CounterState = {
+	value: number
 	maxValue: number
 	resetValue: number
 }
 
-//union type
 export type ActionsType =
-	| IncrementCounterA
-	| ResetCounterA
-	| ChangeResetValueA
-	| ChangeCounterMaxValueA
+	| ReturnType<typeof incrementAC>
+	| ReturnType<typeof resectAC>
+	| ReturnType<typeof setMaxValueAC>
+	| ReturnType<typeof setResetValueAC>
 
 
-const initialState: initialStateType = {
-	counterValue: 0,
-	maxValue: 10,
-	resetValue: 0
-}
-//Если мы используем данные с сервера, каким образом мы их инициализируем при первом рендере?
-export const counterReducer = (
-	state: initialStateType = initialState,
-	action: ActionsType,
-): initialStateType => {
 
-	switch (action.type) {
-		case 'INCREMENT-COUNTER': {
-			const isMaxValue = state.counterValue >= state.maxValue
-			return {
-				...state,
-				counterValue: !isMaxValue
-					? state.counterValue + 1
-					: state.counterValue
-			}
-		}
-
-		case 'RESET-COUNTER': {
-			return {...state, counterValue: state.resetValue}
-		}
-
-		case 'CHANGE-COUNTER-MAX': {
-			return {...state, maxValue: action.newValue}
-		}
-
-		case "CHANGE-RESET-VALUE": {
-			return {...state, resetValue: action.newValue}
-
-		}
-
-		default:
-			return state
-	}
-}
-
-
-// функции фабрики
-export const incrementAC = (): IncrementCounterA => {
-	return {
-		type: 'INCREMENT-COUNTER',
-	} as const
-}
-
-export const resectAC = (): ResetCounterA => {
-	return {
-		type: 'RESET-COUNTER',
-	} as const
-}
-
-export const changeMaxValueAC = (newValue: number): ChangeCounterMaxValueA => {
-	return {
-		type: 'CHANGE-COUNTER-MAX',
-		newValue
-	} as const
-}
-
-export const changeResetValueAC = (newValue: number): ChangeResetValueA => {
-	return {
-		type: 'CHANGE-RESET-VALUE',
-		newValue
-	} as const
-}
 
 
 

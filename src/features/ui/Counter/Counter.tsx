@@ -9,8 +9,8 @@ import PlusOneIcon from '@mui/icons-material/PlusOne';
 import RotateLeftIcon from '@mui/icons-material/RotateLeft';
 import {useAppDispatch} from "../../../common/hooks/useAppDispatch";
 import {useAppSelector} from "../../../common/hooks/useAppSelector";
-import {changeMaxValueAC, changeResetValueAC, incrementAC, resectAC} from "../../model/counter-reducer";
-import {selectCounterValue, selectMaxValue, selectResetValue} from "../../model/counterSelectors";
+import {setMaxValueAC, setResetValueAC, incrementAC, resectAC} from "../../model/counter-reducer";
+import {selectCounterValue, selectMaxValue} from "../../model/counterSelectors";
 import {CounterOptions} from "./CounterOptions/CounterOptions";
 import {DisplayCounterValue} from "./DisplayCounterValue/DisplayCounterValue";
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
@@ -31,9 +31,9 @@ export const Counter = () => {
 	}
 
 	const OptionsSaved = (max: number, start: number) => {
-		dispatch(changeMaxValueAC(max))
+		dispatch(setMaxValueAC(max))
 		switchDisplayOptions()
-		dispatch(changeResetValueAC(start))
+		dispatch(setResetValueAC(start))
 	}
 
 	const isMaxValue = counterValue >= maxValue
@@ -47,7 +47,7 @@ export const Counter = () => {
 	}
 
 	const setRandomMaxValue = (maxValueNow: number) => {
-		dispatch(changeMaxValueAC(generateRandomMaxValue(maxValueNow)))
+		dispatch(setMaxValueAC(generateRandomMaxValue(maxValueNow)))
 		dispatch(resectAC());
 	}
 
