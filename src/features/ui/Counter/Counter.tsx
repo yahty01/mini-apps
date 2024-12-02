@@ -13,12 +13,10 @@ import {selectCounterValue, selectMaxValue, selectResetValue} from "../../model/
 import {CounterOptions} from "./CounterOptions/CounterOptions";
 import {DisplayCounterValue} from "./DisplayCounterValue/DisplayCounterValue";
 import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
+import {generateRandomMaxValue} from "../../../common/utils/generateRandomMaxValue";
 
-const generateRandomMaxValue = (maxValueNow: number) => Math.round(Math.random() * 20) + maxValueNow;
 
 export const Counter = () => {
-
-
 	const dispatch = useAppDispatch()
 	const counterValue = useAppSelector(selectCounterValue)
 	const maxValue = useAppSelector(selectMaxValue)
