@@ -106,6 +106,11 @@ export const StyledMainDIv = styled(Box)`
   justify-content: center;
   align-items: center;
 	outline: 1px solid red;
+	@media (max-width: 1280px) {
+		justify-content: flex-end;
+		align-items: flex-start;
+		margin-top: 2rem;
+	}
 `
 
 const StyledCounter = styled.div`
@@ -115,8 +120,8 @@ const StyledCounter = styled.div`
   display: flex;
   flex-direction: column;
   outline: ${theme.colors.primaryDark} 10px solid;
-  height: fit-content;
-  padding: 60px;
+  min-height: 380px;
+  padding: 50px;
   border-radius: 10px;
   width:500px;
   user-select: none;

@@ -39,7 +39,7 @@ export const CounterOptions = ({OptionsSaved, maxValue, resetValue}: CounterOpti
 		OptionsSaved(maxOptionsValue, resetOptionsValue)
 		dispatch(resectAC());
 	}
-
+//what ta f*
 	const checkError = (first: number, second: number) => {
 		let isError: boolean = false
 
@@ -55,35 +55,29 @@ export const CounterOptions = ({OptionsSaved, maxValue, resetValue}: CounterOpti
 
 	return (
 		<StyledCounterOptions>
-			<Stack>
 				<div>
 					<span>Max value</span>
 					<StyledSlider defaultValue={0} aria-label="Default" valueLabelDisplay="auto" value={maxOptionsValue} onChange={onChangeMaxValueHandler}/>
 				</div>
 				<div>
 					<span>Reset value</span>
-					{checkError(maxOptionsValue, resetOptionsValue) && <span style={{marginLeft: "5px", color: "red", fontSize: "small"}}>Так разве бывает -_- ?</span>}
+					{checkError(maxOptionsValue, resetOptionsValue) && <StyledSpan>Так разве бывает -_- ?</StyledSpan>}
 					<Stack direction="row" spacing={1}>
 						<StyledSlider defaultValue={0} aria-label="Default" valueLabelDisplay="auto" value={resetOptionsValue} onChange={onChangeStartValueHandler}/>
 					</Stack>
 				</div>
-			</Stack>
-
 			<Button variant="contained" onClick={onCLickSaveHandler} disabled={checkError(maxOptionsValue, resetOptionsValue)}>Save</Button>
 		</StyledCounterOptions>
 	);
 };
 
-const StyledCounterOptions = styled.div`
+const StyledCounterOptions = styled(Stack)`
   font-size: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
   background-color: ${theme.colors.accent};
   outline: ${theme.colors.primaryDark} 10px solid;
   color: ${theme.colors.accentLight};
-  height: fit-content;
-  padding: 60px;
+	min-height: 380px;
+  padding: 50px;
   border-radius: 10px;
   width:500px;
 	
@@ -95,4 +89,14 @@ const StyledCounterOptions = styled.div`
 
 const StyledSlider = styled(Slider)`
   width: 50px;
+`
+const StyledSpan = styled.span`
+	margin-left: 10px;
+	color: #bd2020;
+	font-size: 0.65rem;
+	font-weight: bold;
+	background-color: ${theme.colors.primary};
+	padding: 2px;
+	border-radius: 5px;
+	outline: 1px solid #bd2020;
 `
